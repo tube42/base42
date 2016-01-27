@@ -1,0 +1,137 @@
+<project name="base42" default="help">
+  <property name="proj" value="base42" />
+  
+  <property name="gdx_version" value="1.5.4" />
+  <property name="gdx_checksum" value="158d2faeddb36e0656119ad586885a0fc53b02e3fe5b3ffcf7bb8b783db15f22" />
+
+
+  <!-- download and compile or unpack external dependencies -->
+  <target name="setup">
+    <mkdir dir="${user.home}/.android" />
+    <mkdir dir="${user.home}/.android/.dl" />
+
+    
+    <mkdir dir="build" />
+    <mkdir dir="external" />    
+    <mkdir dir="external/tmp" />    
+    <mkdir dir="external/desktop" />
+    <mkdir dir="external/android" />
+    <mkdir dir="external/common" />
+    <mkdir dir="external/bin" />
+    
+        
+    <!-- update submodules, build them and copy the jars -->
+    <exec executable="git" failifexecutionfails="true">
+      <arg line="submodule update --init"/>
+    </exec>
+    <exec executable="git" failifexecutionfails="true">
+      <arg line="submodule foreach ant dist"/>
+    </exec>
+    
+    
+    <unjar src="submodules/kickstarter/Kickstarter_lib.jar" dest="external/common" />
+    <unjar src="submodules/tweeny/Tweeny_lib.jar" dest="external/common" />    
+    <unjar src="submodules/composition/Composition_lib.jar" dest="external/common" />
+    
+    <unjar src="submodules/marm/marm_app.jar" dest="external/bin" />
+    <unjar src="submodules/composition/Composition_app.jar" dest="external/bin" />
+    
+
+    <!-- download libgdx -->
+    <get skipexisting="true" src="https://libgdx.badlogicgames.com/releases/libgdx-${gdx_version}.zip"
+      dest="${user.home}/.android/.dl/gdx-${gdx_version}.zip" />
+
+    <!-- verify libgdx file -->
+    <checksum file="${user.home}/.android/.dl/gdx-${gdx_version}.zip"
+      algorithm="SHA-256" property="gdx_checksum_computed" />
+    <condition property="gdx_verify" >
+      <not>
+        <equals arg1="${gdx_checksum_computed}" arg2="${gdx_checksum}" forcestring="true" />
+      </not>
+    </condition>
+    <fail message="libGDX damadged! ${gdx_checksum} != ${gdx_checksum_computed}"
+      if="${gdx_verify}" />
+
+    <!-- and unpack it to a temporary dir -->
+    <unzip src="${user.home}/.android/.dl/gdx-${gdx_version}.zip" dest="external/tmp"/>
+    <unjar src="external/tmp/gdx.jar" dest="external/common" />
+    <unjar src="external/tmp/extensions/gdx-freetype/gdx-freetype.jar" dest="external/common" />
+
+    <!-- bin -->
+    <unjar src="external/tmp/extensions/gdx-tools/gdx-tools.jar" dest="external/bin" />
+
+    <!-- desktop -->
+    <unjar src="external/tmp/gdx-backend-lwjgl-natives.jar" dest="external/desktop" />
+    <unjar src="external/tmp/gdx-backend-lwjgl.jar" dest="external/desktop" />
+    <unjar src="external/tmp/gdx-natives.jar" dest="external/desktop" />
+    <unjar src="external/tmp/extensions/gdx-freetype/gdx-freetype-natives.jar" dest="external/desktop" />
+   
+
+    <!-- android -->
+    <unjar src="external/tmp/gdx-backend-android.jar" dest="external/android/" />
+    <copydir src="external/tmp/armeabi/" dest="external/android/lib/armeabi" />
+    <copydir src="external/tmp/armeabi-v7a/" dest="external/android/lib/armeabi-v7a" />
+    <copydir src="external/tmp/x86" dest="external/android/lib/x86" />
+    <copydir src="external/tmp/extensions/gdx-freetype/armeabi" dest="external/android/lib/armeabi" />
+    <copydir src="external/tmp/extensions/gdx-freetype/armeabi-v7a" dest="external/android/lib/armeabi-v7a" />
+    <copydir src="external/tmp/extensions/gdx-freetype/x86" dest="external/android/lib/x86" />
+    
+  </target>
+
+
+  <!-- for desktop -->
+  <path id="cp">
+    <pathelement path="build"/>
+    <pathelement path="external/common"/>
+    <pathelement path="external/desktop"/>
+  </path>
+
+
+  <target name="init_local">
+    <tstamp/>
+    <mkdir dir="build"/>
+  </target>
+
+  <target name="compile_local" depends="init_local" >
+    <javac includeantruntime="false" destdir="build">
+      <src path="src" />
+      <exclude name="se/tube42/*/android/**" />
+      <classpath refid="cp" />
+    </javac>
+  </target>
+
+  <!-- create dist jars -->
+  <target name="dist" depends="compile_local" >
+    
+    <jar jarfile="Base42_desktop_lib.jar">
+      <fileset dir="build"/>
+      <fileset dir="external/common"/>
+      <fileset dir="external/desktop"/>
+    </jar>
+    
+    <jar jarfile="Base42_desktop_bin.jar">
+      <fileset dir="external/bin"/>
+    </jar>
+    
+    <jar jarfile="Base42_android_lib.jar">
+      <fileset dir="build"/>
+      <fileset dir="external/common"/>
+      <fileset dir="external/android"/>
+    </jar>
+  </target>
+
+
+  <target name="clean"  description="clean up" >
+    <delete dir="build"/>
+    <delete dir="external"/>
+    <delete file="Base42_desktop_lib.jar" />
+    <delete file="Base42_desktop_bin.jar" />
+    <delete file="Base42_android_lib.jar" />
+    
+    <exec executable="git" failifexecutionfails="true">
+      <arg line="submodule foreach ant clean"/>
+    </exec>
+    
+  </target>
+</project>
+
