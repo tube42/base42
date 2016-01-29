@@ -1,6 +1,9 @@
 BASE 42
 =======
 
+.. image:: https://travis-ci.org/tube42/base42.svg
+    :target: https://travis-ci.org/tube42/base42
+
 My libgdx android/desktop boilerplate code. It downloads and combines a number of 
 different open source projects into a single JAR file.
 

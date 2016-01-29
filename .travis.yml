@@ -1,0 +1,19 @@
+language: java
+
+script:
+    - ant setup
+    - ant dist
+
+cache:
+  directories:
+    - $HOME/.android
+
+branches:
+  only:
+    - master
+    - /^rel-.*$/
+    
+#addons:
+#  artifacts:
+#    paths:
+#      - ./*.jar
