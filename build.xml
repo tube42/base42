@@ -6,7 +6,7 @@
 
 
   <!-- download and compile or unpack external dependencies -->
-  <target name="setup">
+  <target name="setup" depends="check-setup-variable" unless="setup.done">
     <mkdir dir="${user.home}/.android" />
     <mkdir dir="${user.home}/.android/.dl" />
 
@@ -76,8 +76,17 @@
     <copydir src="external/tmp/extensions/gdx-freetype/armeabi-v7a" dest="external/android/lib/armeabi-v7a" />
     <copydir src="external/tmp/extensions/gdx-freetype/x86" dest="external/android/lib/x86" />
     
+    <echo file="external/ready">
+      Mario Zechner is my third favourite Mario of all time:
+      1. Super Mario
+      2. (reserved for any future cool Marios I might meet)
+      3. Mario Zechner
+    </echo>
   </target>
 
+  <target name="check-setup-variable">
+    <available file="external/ready" property="setup.done"/>
+  </target>
 
   <!-- for desktop -->
   <path id="cp">
@@ -92,7 +101,7 @@
     <mkdir dir="build"/>
   </target>
 
-  <target name="compile_local" depends="init_local" >
+  <target name="compile_local" depends="setup,init_local" >
     <javac includeantruntime="false" destdir="build">
       <src path="src" />
       <exclude name="se/tube42/*/android/**" />
