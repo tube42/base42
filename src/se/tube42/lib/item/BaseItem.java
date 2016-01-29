@@ -25,12 +25,15 @@ public abstract class BaseItem extends Item
           FLAG_DEAD       = 8
           ;
 
+    public static final int
+          STATE_NONE = 0
+          ;
 
     // --------------------------------------------------------------
     
     protected float w, h;
     public float cr, cg, cb;
-    public int flags;
+    public int flags, state;
     public int x2, y2;
     
     public BaseItem()
@@ -39,6 +42,7 @@ public abstract class BaseItem extends Item
 
         // temporary for now
         setColor(null);
+        this.state = STATE_NONE;
         this.w = this.h = 64;
         this.flags = FLAG_VISIBLE /* | FLAG_TOUCHABLE */;
         reset();
@@ -81,6 +85,11 @@ public abstract class BaseItem extends Item
         // EMPTY
     }
 
+    // animation with "to" as direction
+    public void set(int type, boolean to, float a, float b, float dur, TweenEquation te)
+    {
+        set(type, to ? a : b, to ? b : a).configure(dur, te);
+    }
 
     // --------------------------------------------
 
@@ -169,4 +178,7 @@ public abstract class BaseItem extends Item
     }
 
     public abstract void draw(SpriteBatch sb);
+    
+    public void setState(int state) { this.state = state; }
+    public int getState() { return state; }    
 }
