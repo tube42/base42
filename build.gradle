@@ -93,19 +93,3 @@ bintray {
 		}
 	}
 }
-
-/*
-jar {
-    manifest {
-        attributes('Provider': 'gradle',
-            'Implementation-Title': project.name,
-            'Implementation-Version': project.version)
-    }
-}
-
-test {
-    outputs.upToDateWhen{false}
-    afterTest { desc, result ->
-        logger.quiet "Testing ${desc.name} (${desc.className}): ${result.resultType}"
-    }
-}*/
