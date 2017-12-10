@@ -1,7 +1,12 @@
 build
+bin
 external
-tmp
 *.dl
 *~
 *.jar
 *.swp
+
+.gradle
+.vscode
+.project
+.settings

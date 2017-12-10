@@ -2,6 +2,7 @@ package se.tube42.lib.item;
 
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.*;
+import com.badlogic.gdx.utils.*;
 
 import se.tube42.lib.tweeny.*;
 import se.tube42.lib.ks.*;
@@ -9,6 +10,7 @@ import se.tube42.lib.scene.*;
 
 public class BaseText extends BaseItem
 {
+    private GlyphLayout gl;
 
     private String text;
     private BitmapFont font;
@@ -18,6 +20,7 @@ public class BaseText extends BaseItem
     public BaseText(BitmapFont font)
     {
         this.font = font;
+        this.gl = new GlyphLayout();
         setText("");
         setAlignment(0, 0);
         setMaxWidth(0);
@@ -55,14 +58,13 @@ public class BaseText extends BaseItem
     public void calcBounds()
     {
         if(text != null) {
-            BitmapFont.TextBounds tb;
             if(mw > 0) {
-                tb = font.getWrappedBounds(text, mw);
+                gl.setText(font, text, 0, text.length(), font.getColor(), mw, Align.left, false, null);
             } else {
-                tb = font.getBounds(text);
+                  gl.setText(font, text);
             }
-            h = tb.height;
-            w = tb.width;
+            w = (int)(0.5f + gl.width);
+            h = (int)(0.5f + gl.height);
         } else {
             w = h = 1;
         }
@@ -84,7 +86,7 @@ public class BaseText extends BaseItem
     {
         font.setColor( cr, cg, cb, getAlpha());
         if(mw > 0) {
-            font.drawWrapped(sb, text, x, y, mw);
+            font.draw(sb, text, x, y, mw, Align.center, true);
         } else {
             font.draw(sb, text, x, y);
         }

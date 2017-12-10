@@ -80,7 +80,10 @@ public class AssetService
 
         BitmapFont [] ret = new BitmapFont[sizes.length];
         for(int i = 0; i < sizes.length; i++) {
-            ret[i] = g.generateFont(sizes[i], charset, false);
+            FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+            parameter.size = sizes[i];
+            parameter.characters = charset;
+            ret[i] = g.generateFont(parameter);
             ret[i].setUseIntegerPositions(true);
         }
 
