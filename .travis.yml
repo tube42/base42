@@ -1,8 +1,11 @@
 language: java
 
 script:
-    - ant setup
-    - ant dist
+    - ./gradlew clean
+    - ./gradlew test
+    - ./gradlew build
+    - ./gradlew assemble
+    - ./gradlew jar
 
 cache:
   directories:
@@ -12,8 +15,8 @@ branches:
   only:
     - master
     - /^rel-.*$/
-    
-#addons:
-#  artifacts:
-#    paths:
-#      - ./*.jar
+
+addons:
+  artifacts:
+    paths:
+      - build/libs/*.jar
