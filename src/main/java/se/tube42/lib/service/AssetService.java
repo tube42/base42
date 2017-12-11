@@ -67,6 +67,20 @@ public class AssetService
         tr.setV2( tr.getV2() - hph);
     }
 
+    public static ParticleEffectPool loadParticle(String dir, String name)
+    {
+        ParticleEffect effect = new ParticleEffect();
+        effect.load(Gdx.files.internal(dir + name + ".p"), Gdx.files.internal(dir));
+        return new ParticleEffectPool(effect, 0, 70);
+    }
+
+    public static NinePatch loadPatch(String filename, int l, int r, int t, int b)
+    {
+        final Texture te = new Texture(Gdx.files.internal(filename));
+        // t.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
+        final TextureRegion tr = new TextureRegion(te);
+        return new NinePatch(tr, l, r, t, b);
+    }
 
     // -------------------------------------------------------------------
     // fonts
