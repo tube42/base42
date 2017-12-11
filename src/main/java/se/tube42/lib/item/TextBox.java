@@ -63,7 +63,7 @@ public class TextBox
 
         if(maxwidth > 0) {
             gl.setText(font, text, 0, text.length(), font.getColor(),
-                maxwidth, Align.left, false, null);
+                maxwidth, Align.left, true, null);
         } else {
             gl.setText(font, text);
         }
@@ -74,11 +74,15 @@ public class TextBox
         if(this.text == null || this.font == null)
             return;
 
+        // font.draw(sb, gl, x, y);
+
+
+        x += aw * gl.width;
+        y += ah * gl.height;
+
+
         if(maxwidth > 0) {
-            font.draw(sb, text,
-            x + aw * gl.width,
-            y + ah * gl.height,
-            maxwidth, Align.center, true);
+            font.draw(sb, text, x, y, maxwidth, Align.left, true);
         } else {
             font.draw(sb, text, x, y);
         }

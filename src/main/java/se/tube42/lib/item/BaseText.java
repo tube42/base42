@@ -25,16 +25,19 @@ public class BaseText extends BaseItem
     public void setAlignment(float aw, float ah)
     {
         text.setAlignment(aw, ah);
+        calcBounds();
     }
 
     public void setMaxWidth(int mw)
     {
         text.setMaxWidth(mw);
+        calcBounds();
     }
 
     public void setText(String text)
     {
         this.text.setText(text);
+        calcBounds();
     }
 
 
@@ -48,11 +51,18 @@ public class BaseText extends BaseItem
         return text.getFont();
     }
 
+    public void calcBounds()
+    {
+        w = text.getWidth();
+        h = text.getHeight();
+    }
 
     // --------------------------------------------
 
     public void draw(SpriteBatch sb)
     {
+        final float a = getAlpha();
+        text.getFont().setColor(cr, cg, cb, a);
         text.draw(sb, getX(), getY() );
     }
 
