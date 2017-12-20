@@ -34,14 +34,14 @@ public class Scene
 
     // ---------------------------------------
 
-    public Layer addLayer(Layer l)
+    public Layer addLayer(Layer ...ls)
     {
-    	return layers.add(l);
+		return layers.add(ls);
     }
 
     public Layer getLayer(int index)
     {
-    	return layers.get(index);
+		return layers.get(index);
     }
 
     public LayerList getLayers()
@@ -61,7 +61,6 @@ public class Scene
 
     public void resize(int w, int h)
     {
-
     }
 
     public final void update(float dt)
@@ -72,11 +71,9 @@ public class Scene
 
 
     public void dispose() { }
-
     public void onUpdate(float dt)  { }
     public void onShow() { }
     public void onHide() { }
-
     public void onPause() { }
     public void onResume() { }
 

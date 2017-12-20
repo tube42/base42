@@ -33,14 +33,27 @@ public class LayerList
         return list[index];
     }
 
-    public Layer add(Layer l)
+	public Layer add(Layer ...ls)
     {
-        if(list_cnt == list.length)
-            grow();
+		Layer ret = null;
+		cap(ls.length);
+		for(Layer l : ls)
+			list[list_cnt++] = ret = l;
+        return ret;
+	}
 
-        list[list_cnt++] = l;
-        return l;
-    }
+	private void cap(int n)
+	{
+		final int need = list_cnt + n;
+		if(need < list.length)
+			return;
+
+		final int newsize = Math.max(need, list.length * 2 + 4);
+		Layer [] tmp = new Layer[newsize];
+        for(int i = 0; i < list.length; i++)
+            tmp[i] = list[i];
+        list = tmp;
+	}
 
     private void grow()
     {

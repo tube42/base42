@@ -89,8 +89,7 @@ implements MessageListener
 
             /* show new one */
             disable_input = true;
-            JobService.add(this, time,
-                      MSG_SET_SCENE, 0, s, this);
+            JobService.add(this, time, MSG_SET_SCENE, 0, s, this);
         } else {
             set_scene_now(s);
         }
@@ -194,8 +193,7 @@ implements MessageListener
 
     }
 
-    public void onMessage(int msg, int data0,
-              Object data1, Object sender)
+    public void onMessage(int msg, int data0, Object data1, Object sender)
     {
         switch(msg) {
         case MSG_SET_SCENE:

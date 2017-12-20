@@ -32,34 +32,22 @@ public class Layer
         this.flags = FLAG_VISIBLE | FLAG_TOUCHABLE;
     }
 
-
-
     // --------------------------------------------
-
     public void hide()
     {
-
     }
 
     public void show()
     {
     }
 
-
     // --------------------------------------------
 
-    public Layer add(BaseItem [] bi)
+    public Layer add(BaseItem ...bi)
     {
-        for(BaseItem b : bi)
-            add(b);
-        return this;
-    }
-
-    public Layer add(BaseItem bi)
-    {
-        if(list_cnt == list.length)
-            grow();
-        list[list_cnt++] = bi;
+		cap(bi.length);
+		for(BaseItem b : bi)
+			list[list_cnt++] = b;
         return this;
     }
 
@@ -71,17 +59,20 @@ public class Layer
     public BaseItem get(int index)
     {
         return list[index];
-    }
+	}
 
-    private void grow()
-    {
-        BaseItem [] tmp = new BaseItem[list.length * 2 + 4];
+	private void cap(int n)
+	{
+		final int need = list_cnt + n;
+		if(need < list.length)
+			return;
+
+		final int newsize = Math.max(need, list.length * 2 + 4);
+		BaseItem [] tmp = new BaseItem[newsize];
         for(int i = 0; i < list.length; i++)
             tmp[i] = list[i];
         list = tmp;
-    }
-
-    // -----------------------------------------
+	}
 
     public void update(float dt)
     {
@@ -94,7 +85,6 @@ public class Layer
             if(ni != null)
                 ni.update(dt);
         }
-
     }
 
     public void draw(SpriteBatch sb)
