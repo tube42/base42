@@ -135,7 +135,11 @@ public class Layer
             if(w != r) list[w] = list[r];
             if(list[r] != item) w++;
             else found = true;
-        }
+		}
+
+		if(found)
+			list_cnt --;
+
         return found;
     }
 

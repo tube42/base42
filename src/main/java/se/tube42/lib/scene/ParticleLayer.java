@@ -12,18 +12,18 @@ import se.tube42.lib.item.*;
 
 public class ParticleLayer extends Layer
 {
-    
+
     private Particle pool_head, active_head;
-    
+
     public ParticleLayer()
     {
         flags = FLAG_UPDATE | FLAG_VISIBLE;
         pool_head = null;
         active_head = null;
     }
-    
-    
-    
+
+
+
     public Particle create(float delay, float lifespan)
     {
         Particle ret = pool_alloc();
@@ -32,8 +32,8 @@ public class ParticleLayer extends Layer
         active_add(ret);
         return ret;
     }
-    
-    
+
+
     // pool operations
     private Particle pool_alloc()
     {
@@ -46,13 +46,13 @@ public class ParticleLayer extends Layer
         ret.reset();
         return ret;
     }
-    
+
     private void pool_free(Particle p)
     {
         p.next = pool_head;
         pool_head = p;
     }
-    
+
     // --------------------------------------------
     private void active_add(Particle p)
     {
@@ -64,14 +64,14 @@ public class ParticleLayer extends Layer
     	// TODO
     }
     // --------------------------------------------
-    
+
     protected void onRemove(Particle p)
     {
         /* subclass this from post-removal logic */
     }
-    
+
     // --------------------------------------------
-    
+
     // disabled stuff
     public final Layer add(BaseItem [] bi) { return this; }
     public final Layer add(BaseItem bi) { return this; }
@@ -80,9 +80,9 @@ public class ParticleLayer extends Layer
     public final BaseItem hit(float x, float y) { return null; }
     public final void clear() { }
     // public final void remove(BaseItem item) { }
-    
+
     // -----------------------------------------
-    
+
     public void killAllParticles()
     {
     	for(Particle curr = active_head; curr != null; curr = curr.next) {
@@ -90,12 +90,12 @@ public class ParticleLayer extends Layer
     	}
     	update(0);
     }
-    
+
     public void update(float dt)
     {
         if( (flags & FLAG_UPDATE) == 0 || (flags & FLAG_VISIBLE) == 0)
             return;
-        
+
         Particle curr = active_head;
         Particle last = null;
         while(curr != null) {
@@ -116,17 +116,32 @@ public class ParticleLayer extends Layer
             curr = next;
         }
     }
-    
+
     public void draw(SpriteBatch sb)
     {
         if( (flags & FLAG_VISIBLE) == 0)
             return;
-        
+
         Particle tmp = active_head;
         while(tmp != null) {
             tmp.draw(sb);
             tmp = tmp.next;
         }
-    }
-}
+	}
 
+	/** debug function to count number of pooled particles */
+	public int debugCountPool() {
+		int n = 0;
+		for(Particle tmp = pool_head; tmp != null;tmp = tmp.next)
+			n++;
+		return n;
+	}
+
+	/** debug function to count number of active particles */
+	public int debugCountActive() {
+		int n = 0;
+		for(Particle tmp = active_head; tmp != null;tmp = tmp.next)
+			n++;
+		return n;
+	}
+}

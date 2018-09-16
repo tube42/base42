@@ -1,6 +1,8 @@
 package se.tube42.test.scene;
 
 import com.badlogic.gdx.graphics.g2d.*;
+import com.badlogic.gdx.graphics.g3d.particles.ResourceData.AssetData;
+
 import org.junit.*;
 
 import se.tube42.lib.item.BaseItem;
@@ -55,4 +57,57 @@ public class TestLayer
 			Assert.assertEquals("layer grow items2 elements",
 				l.get(i + items1.length), items2[i]);
 	}
+
+	@Test public void testRemove()
+	{
+		Layer l = new Layer();
+		DummyItem i0 = new DummyItem();
+		DummyItem i1 = new DummyItem();
+		DummyItem i2 = new DummyItem();
+
+
+		l.add(i0);
+		l.add(i1);
+		Assert.assertEquals("layer with 2 elements", l.getSize(), 2);
+
+		boolean removed = l.remove(i2);
+		Assert.assertEquals("Could not remove i2", removed, false);
+		Assert.assertEquals("layer has stil 2 elements", l.getSize(), 2);
+
+		removed = l.remove(i0);
+		Assert.assertEquals("Could remove i0", removed, true);
+		Assert.assertEquals("layer with one element removed", l.getSize(), 1);
+
+		Assert.assertEquals("layer correct element", l.get(0), i1);
+	}
+
+
+	@Test public void testMoveLast()
+	{
+		Layer l = new Layer();
+		DummyItem i0 = new DummyItem();
+		DummyItem i1 = new DummyItem();
+		DummyItem i2 = new DummyItem();
+		DummyItem i3 = new DummyItem();
+
+
+		l.add(i0);
+		l.add(i1);
+		l.add(i2);
+		Assert.assertEquals("layer with 3 elements", l.getSize(), 3);
+
+
+		l.moveLast(i1);
+		Assert.assertEquals("layer with still 3 elements", l.getSize(), 3);
+
+		Assert.assertEquals("layer first element", l.get(0), i0);
+		Assert.assertEquals("layer second element", l.get(1), i2);
+		Assert.assertEquals("layer third element", l.get(2), i1);
+
+
+		l.moveLast(i3);
+		Assert.assertEquals("layer with still 3 elements", l.getSize(), 3);
+
+	}
+
 }

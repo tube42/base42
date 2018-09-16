@@ -50,7 +50,7 @@ allprojects {
 
 
 
-version = '0.3.4'
+version = '0.3.5'
 group = 'se.tube42.base42'
 
 publishing {
