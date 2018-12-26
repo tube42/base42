@@ -16,7 +16,8 @@ public abstract class BaseItem extends Item
           ITEM_X = 2,
           ITEM_Y = 3,
           ITEM_A = 4,
-          ITEM_V = 5
+		  ITEM_V = 5,
+		  ITEM_U = 6
           ;
     public static final int
           FLAG_VISIBLE    = 1,
@@ -30,15 +31,20 @@ public abstract class BaseItem extends Item
           ;
 
     // --------------------------------------------------------------
-    
+
     protected float w, h;
     public float cr, cg, cb;
     public int flags, state;
     public int x2, y2;
-    
+
     public BaseItem()
     {
-        super(6);
+		this(7);
+    }
+
+	public BaseItem(int elements)
+	{
+		super(elements);
 
         // temporary for now
         setColor(null);
@@ -46,8 +52,7 @@ public abstract class BaseItem extends Item
         this.w = this.h = 64;
         this.flags = FLAG_VISIBLE /* | FLAG_TOUCHABLE */;
         reset();
-    }
-
+	}
     public void reset()
     {
         setImmediate(ITEM_V, 0);
@@ -178,7 +183,7 @@ public abstract class BaseItem extends Item
     }
 
     public abstract void draw(SpriteBatch sb);
-    
+
     public void setState(int state) { this.state = state; }
-    public int getState() { return state; }    
+    public int getState() { return state; }
 }

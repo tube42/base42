@@ -23,8 +23,8 @@ Bintray maven repository:
 If you are using gradle with jcenter():
 ::
  dependencies {
-    compile "se.tube42.base42:base42:0.3.5"
+    compile "se.tube42.base42:base42:0.3.6"
  }
 
 
-Replace 0.3.2 with the version you want to use...
+Replace 0.3.6 with the version you want to use...

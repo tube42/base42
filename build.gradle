@@ -2,6 +2,9 @@ buildscript {
     repositories {
         jcenter()
     }
+	dependencies {
+        classpath 'com.android.tools.build:gradle:1.5.0'
+    }
 }
 
 plugins {
@@ -50,7 +53,7 @@ allprojects {
 
 
 
-version = '0.3.5'
+version = '0.3.6'
 group = 'se.tube42.base42'
 
 publishing {
